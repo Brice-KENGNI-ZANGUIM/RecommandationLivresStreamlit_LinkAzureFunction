@@ -84,7 +84,6 @@ with st.sidebar:
 #############################     acquisition du nom de modèle à utiliser       #############################
 #############################################################################################################
 
-	models = []
 
 	st.write("###  1 - Quels models voudriez vous utiliser  ?")
 	st.write("###### plusieurs choix sont possibles")
@@ -99,6 +98,8 @@ with st.sidebar:
 ###########     Actualisation de la variable models contenant la liste des modèles à utiliser     ###########
 #############################################################################################################
 
+	models = []
+	
 	if content_base :
 		models.append("Cb")
 	if SVD :
@@ -143,14 +144,11 @@ with st.sidebar:
 ############      Url d'accès à l'application Azur fonction      ###########
 ############################################################################
 
-models = "__".join(models)
-azur_function_url = "https://recommandationserverlessapp.azurewebsites.net/api/HttpTrigger1"
+azur_function_url = "https://recommandationserverlessapp.azurewebsites.net/api/HttpTrigger1/"
 parameters = {  "user_id"         :   user_id, 
                 "recommand_count" :   n,
-                "models"          :   models,
                 "if_recommand"    :   0
              }
-models = models.split("__")
 
 
 #######################################################################################
@@ -173,12 +171,12 @@ st.write( user_articles_list )
 ################            Effectuation des recommandation             ##############
 ######################################################################################
 if recomand :
-    parameters["recommand"] = 1
+    parameters["if_recommand"] = 1
     
     #  Pour chacun des modèles, on effectue une requête pour acquérir des recommandations de livres
     recommandation = []
-    for _ in models :
-        
+    for mod in models :
+        parameters["models"] = mod
         articles_recommandes = requests.get( azur_function_url, params = parameters ).text
         articles_recommandes = str_bytes_encode_to_dataframe( articles_recommandes )
         
@@ -198,3 +196,8 @@ if recomand :
             st.write(recommandation[i])
 		
 #st.balloons()
+
+
+
+
+
