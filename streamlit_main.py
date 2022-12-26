@@ -171,29 +171,29 @@ if recomand :
 ################            Effectuation des recommandation             ##############
 ######################################################################################
 
-    parameters["if_recommand"] = 1
+	parameters["if_recommand"] = 1
     
     #  Pour chacun des modèles, on effectue une requête pour acquérir des recommandations de livres
-    recommandation = []
-    for mod in models :
-        parameters["models"] = mod
-        articles_recommandes = requests.get( azur_function_url, params = parameters ).text
-        articles_recommandes = str_bytes_encode_to_dataframe( articles_recommandes )
-        
-        recommandation.append( articles_recommandes )
-    
+	recommandation = []
+	for mod in models :
+		parameters["models"] = mod
+		articles_recommandes = requests.get( azur_function_url, params = parameters ).text
+		articles_recommandes = str_bytes_encode_to_dataframe( articles_recommandes )
+		
+		recommandation.append( articles_recommandes )
 
-    #######################################################################################
-    ###########            Affichage des recommandations d'articles             ###########
-    #######################################################################################
 
-    st.write(f"###  B - Recommandations d'articles à l'utilisateur")
+	#######################################################################################
+	###########            Affichage des recommandations d'articles             ###########
+	#######################################################################################
 
-    columns = st.columns(len(models))
-    for i in range(len(models)) :
-        with columns[i] :
-            st.write(f"###### {i+1} - {models[i]}")
-            st.write(recommandation[i])
+	st.write(f"###  B - Recommandations d'articles à l'utilisateur")
+
+	columns = st.columns(len(models))
+	for i in range(len(models)) :
+		with columns[i] :
+		    st.write(f"###### {i+1} - {models[i]}")
+		    st.write(recommandation[i])
 		
 #st.balloons()
 
