@@ -154,23 +154,23 @@ parameters = {  "user_id"         :   user_id,
 #######################################################################################
 ######   Affichage de la liste des articles déjà consultés par l'utilisateur    #######
 #######################################################################################
+if recomand :
+	user_articles_list = requests.get( azur_function_url, params = parameters ).text
+	user_articles_list = str_bytes_encode_to_dataframe(user_articles_list)
 
-user_articles_list = requests.get( azur_function_url, params = parameters ).text
-user_articles_list = str_bytes_encode_to_dataframe(user_articles_list)
 
+	if len(user_articles_list) == 1:
+		st.write("###  A - Article déjà consulté par l'utilisateur")
+	elif len(user_articles_list) > 1:
+		st.write("###  A - Articles déjà consultés par l'utilisateur")
 
-if len(user_articles_list) == 1:
-    st.write("###  A - Article déjà consulté par l'utilisateur")
-elif len(user_articles_list) > 1:
-    st.write("###  A - Articles déjà consultés par l'utilisateur")
-
-st.write( user_articles_list )
+	st.write( user_articles_list )
 
 
 ######################################################################################
 ################            Effectuation des recommandation             ##############
 ######################################################################################
-if recomand :
+
     parameters["if_recommand"] = 1
     
     #  Pour chacun des modèles, on effectue une requête pour acquérir des recommandations de livres
